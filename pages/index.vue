@@ -3,12 +3,12 @@
     <div>
       <Logo />
       <h1 class="title">
-        ayame-momo-demo
+        Ayame-Momo ビデオデ
       </h1>
       <div class="links">
-        <nuxt-link class="button-grey" to="/video"
+        <!-- <nuxt-link class="button--grey" :to="`/videos`"
           >Ayame-Momoビデオデモ</nuxt-link
-        >
+        > -->
         <a
           href="https://github.com/shiguredo/momo"
           target="_blank"
