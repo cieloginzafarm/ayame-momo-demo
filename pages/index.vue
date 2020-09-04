@@ -3,7 +3,7 @@
     <div>
       <Logo />
       <h1 class="title">
-        Ayame-Momo ビデオデ
+        Ayame-Momo ビデオデモ
       </h1>
       <div class="links">
         <!-- <nuxt-link class="button--grey" :to="`/videos`"

@@ -1,18 +1,13 @@
 [{
   "name": "Test Room 1",
-  "roomId": "cielojordan@farbot-test-1234",
-  "clientId": "18d5ef19f958d8adb0f94c51f6d4f518c9b3c949f231c350a5a97351805ebe68",
-  "signalingKey": "jPnJsAZWKSIro0toyuktmbuAJkzn6636TwibJKDXjN9OOjMU"
+  "roomId": "cielojordan@farbot-test-1234"
   },
 {
   "name": "Test Room 2",
-  "roomId": "cielojordan@farbot-test-5678",
-  "clientId": "4195963353c90b71c647a0a95014cfe4df9ae7ced77f00ea43323913830ee174",
-  "signalingKey": "jPnJsAZWKSIro0toyuktmbuAJkzn6636TwibJKDXjN9OOjMU"
+  "roomId": "cielojordan@farbot-test-5678"
 },
 {
   "name": "Test Room 3",
-  "roomId": "cielojordan@farbot-test-9101",
-  "clientId": "e284ea28e1500d1847824d8862d204297010f13f3f96095aa10a165dfc7535e6",
-  "signalingKey": "jPnJsAZWKSIro0toyuktmbuAJkzn6636TwibJKDXjN9OOjMU"
+  "signalingUrl": "wss://ayame-lite.shiguredo.jp/signaling",
+  "roomId": "cielojordan@farbot-test-9101"
 }]
