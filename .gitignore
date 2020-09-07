@@ -88,3 +88,6 @@ sw.*
 
 # Vim swap files
 *.swp
+
+# Pem file
+ayame-momo-demo.pem
