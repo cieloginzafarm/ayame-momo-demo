@@ -1,13 +1,13 @@
 [{
   "name": "Test Room 1",
-  "roomId": "cielojordan@farbot-test-1234"
+  "roomId": "cielojordanjp@farbot-test-1234"
   },
 {
   "name": "Test Room 2",
-  "roomId": "cielojordan@farbot-test-5678"
+  "roomId": "cielojordanjp@farbot-test-5678"
 },
 {
   "name": "Test Room 3",
   "signalingUrl": "wss://ayame-lite.shiguredo.jp/signaling",
-  "roomId": "cielojordan@farbot-test-9101"
+  "roomId": "cielojordanj@@farbot-test-9101"
 }]

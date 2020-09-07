@@ -2,11 +2,11 @@
   <div>
     <h1>{{ video.name }}</h1>
     <br />
-    <p>Room ID: {{ video.roomId }}</p>
+    <p>ルームID: {{ video.roomId }}</p>
     <br />
-    <p>Client ID: {{ options.clientId }}</p>
+    <p>クライアントID: {{ options.clientId }}</p>
     <br />
-    <p>Signaling Key: {{ signalingKey }}</p>
+    <p>シグナリングキー: {{ signalingKey }}</p>
     <br /><button class="button--grey" @click="connect">Connect</button>
     <button class="button--grey" @click="disconnect">Disconnect</button>
     <p>
@@ -22,7 +22,8 @@
     <div>
       <div style="float:left;">
         <video
-          v-model="mediaStream"
+          id="remote-video"
+          :srcObject.prop="this.mediaStream"
           autoplay
           playsinline
           controls
@@ -45,43 +46,50 @@ import {
 
 export default {
   props: ["video"],
-  data() {
+  asyncData() {
     return {
-      conn: null,
+      conn: AyameConnection(signalingUrl, video.roomId),
+      mediaStream: null,
       signalingUrl: "wss://ayame-lite.shiguredo.jp/signaling",
       signalingKey: "jPnJsAZWKSIro0toyuktmbuAJkzn6636TwibJKDXjN9OOjMU",
       options: defaultOptions,
-      mediaStream: null,
       videoCodec: "none"
     };
   },
   methods: {
     async connect() {
+      
       if (this.signalingKey) {
-        this.options.signalingKey = this.signalingKey;
+        this.conn.options.signalingKey = this.signalingKey;
       }
-      this.options.video.direction = "recvonly";
-      this.options.audio.direction = "recvonly";
-      this.options.video.codec = this.videoCodec;
-      this.conn = AyameConnection(
-        this.signalingUrl,
-        this.video.roomId,
-        this.options,
-        true
-      );
+      this.conn.options.video.direction = "recvonly";
+      this.conn.options.audio.direction = "recvonly";
+      console.log("AyameConnection: " + this.conn);
+      console.log("defaultOptions: " + this.conn.options);
+      this.conn.options.video.codec = this.videoCodec;
+      // this.conn = AyameConnection(
+      //   this.signalingUrl,
+      //   this.video.roomId,
+      //   this.options,
+      //   true
+      // );
       console.log("CONNECTION JSON:");
-      console.log(this.conn);
-      try {
-        await this.conn.connect({ key: this.signalingKey });
-        this.conn.on("open", ({ authzMetadata }) => console.log(authzMetadata));
-        this.conn.on("disconnect", e => console.log(e));
-        this.conn.on("addstream", e => {
-          console.log(e.stream);
-          this.mediaStream.srcObject = e.stream;
+      console.log("HELLO BEFORE");
+      // try {
+        this.conn.connect(this.mediaStream);
+        this.conn.on("open", ({ authzMetadata }) => console.log("OPEN: " + authzMetadata));
+        // console.log('this.conn.on("open")')
+        this.conn.on("disconnect", e => console.log("DISCONNECT: " + e));
+        // console.log('this.conn.on("disconnect")')
+        this.conn.on("addstream", async e => {
+          await console.log("STREAM: " + e.stream);
+          this.mediaStream = e.stream;
         });
-      } catch (error) {
-        console.log("ERROR: ", error);
-      }
+        // console.log('this.conn.on("addstream")')
+      // } catch (error) {
+      //   console.log("ERROR: ", error);
+      // }
+      console.log("HELLO AFTER");
 
       // // Set Stream Settings
       // if (this.videoCodec == "none") {
