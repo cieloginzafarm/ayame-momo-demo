@@ -46,11 +46,10 @@ import {
 
 export default {
   props: ["video"],
-  asyncData() {
+  data() {
     return {
-      conn: AyameConnection(signalingUrl, video.roomId),
+      conn: AyameConnection("wss://ayame-lite.shiguredo.jp/signaling", this.video.roomId),
       mediaStream: null,
-      signalingUrl: "wss://ayame-lite.shiguredo.jp/signaling",
       signalingKey: "jPnJsAZWKSIro0toyuktmbuAJkzn6636TwibJKDXjN9OOjMU",
       options: defaultOptions,
       videoCodec: "none"
@@ -58,75 +57,28 @@ export default {
   },
   methods: {
     async connect() {
-      
       if (this.signalingKey) {
         this.conn.options.signalingKey = this.signalingKey;
       }
       this.conn.options.video.direction = "recvonly";
       this.conn.options.audio.direction = "recvonly";
-      console.log("AyameConnection: " + this.conn);
-      console.log("defaultOptions: " + this.conn.options);
       this.conn.options.video.codec = this.videoCodec;
-      // this.conn = AyameConnection(
-      //   this.signalingUrl,
-      //   this.video.roomId,
-      //   this.options,
-      //   true
-      // );
-      console.log("CONNECTION JSON:");
-      console.log("HELLO BEFORE");
-      // try {
+      if (this.videoCodec == "none") {
+        this.conn.options.video.codec = null;
+      }
+      try {
         this.conn.connect(this.mediaStream);
-        this.conn.on("open", ({ authzMetadata }) => console.log("OPEN: " + authzMetadata));
-        // console.log('this.conn.on("open")')
-        this.conn.on("disconnect", e => console.log("DISCONNECT: " + e));
-        // console.log('this.conn.on("disconnect")')
+        this.conn.on("open", ({ authzMetadata }) => console.log(authzMetadata));
+        this.conn.on("disconnect", e => console.log(e));
         this.conn.on("addstream", async e => {
-          await console.log("STREAM: " + e.stream);
+          await console.log(e.stream);
           this.mediaStream = e.stream;
         });
-        // console.log('this.conn.on("addstream")')
-      // } catch (error) {
-      //   console.log("ERROR: ", error);
-      // }
-      console.log("HELLO AFTER");
-
-      // // Set Stream Settings
-      // if (this.videoCodec == "none") {
-      //   this.videoCodec = null;
-      // }
-      // this.options.video.codec = this.videoCodec;
-      // this.options.video.direction = "recvonly";
-      // this.options.audio.direction = "recvonly";
-      // if (this.video.signalingKey.length > 0) {
-      //   this.options.signalingKey = this.video.signalingKey;
-      // }
-      // this.options.clientId = this.video.clientId ? this.video.clientId : this.options.clientId;
-      // console.log(this.options)
-
-      // // Start Stream Connection
-      // console.log("Starting Video Connection....");
-      // this.conn = AyameConnection(
-      //   this.video.signalingUrl,
-      //   this.video.roomId,
-      //   this.options,
-      //   true
-      // );
-      // console.log(this.conn);
-      // await this.conn.connect({'key': this.conn.options.signalingKey});
-      // this.conn.on("open", ({ authzMetadata }) => console.log(authzMetadata));
-      // this.conn.on("disconnect", e => console.log(e));
-      // this.conn.on("addstream", e => {
-      //   this.mediaStream = e.stream;
-      // });
-
-      // console.log("Connected");
-      // ./momo --no-audio-device --resolution 3840x2160 ayame wss://ayame-lite.shiguredo.jp/signaling cielojordanjp@farbot-test-1234 --signaling-key jPnJsAZWKSIro0toyuktmbuAJkzn6636TwibJKDXjN9OOjMU
-
-      //?roomId=cielojordanjp@farbot-test-1234&signalingKey=jPnJsAZWKSIro0toyuktmbuAJkzn6636TwibJKDXjN9OOjMU
+      } catch (error) {
+        console.log("ERROR: ", error);
+      }
     },
     disconnect() {
-      // this.conn.disconnect;
       if (this.conn) {
         this.conn.disconnect();
         this.conn = null;
