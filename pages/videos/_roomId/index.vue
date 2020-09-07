@@ -4,7 +4,7 @@
     <br />
     <p>ルームID: {{ video.roomId }}</p>
     <br />
-    <p>クライアントID: {{ options.clientId }}</p>
+    <p>クライアントID: {{ conn.options.clientId }}</p>
     <br />
     <p>シグナリングキー: {{ signalingKey }}</p>
     <br /><button class="button--grey" @click="connect">Connect</button>
@@ -48,10 +48,9 @@ export default {
   props: ["video"],
   data() {
     return {
-      conn: AyameConnection("wss://ayame-lite.shiguredo.jp/signaling", this.video.roomId),
+      conn: AyameConnection("wss://ayame-lite.shiguredo.jp/signaling", this.video.roomId, this.defaultOptions),
       mediaStream: null,
       signalingKey: "jPnJsAZWKSIro0toyuktmbuAJkzn6636TwibJKDXjN9OOjMU",
-      options: defaultOptions,
       videoCodec: "none"
     };
   },
@@ -81,7 +80,6 @@ export default {
     disconnect() {
       if (this.conn) {
         this.conn.disconnect();
-        this.conn = null;
         console.log("Disconnected");
       }
     }
